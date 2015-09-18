@@ -3,15 +3,12 @@ require "fileutils"
 module HoneycombSolr
   class Installer
     class <<self
-      def execute(solr_home, options = {})
-        new(solr_home, options).execute
+      def execute(options = {})
+        new(options).execute
       end
     end
 
-    attr_reader :solr_home
-
-    def initialize(solr_home, options)
-      @solr_home = File.expand_path(solr_home)
+    def initialize(options)
       @verbose = !!options[:verbose]
       @force   = !!options[:force]
     end
@@ -45,8 +42,18 @@ module HoneycombSolr
       end
     end
 
+    private
+
+    def solr_home
+      HoneycombSolr.solr_home
+    end
+
+    def jetty_home
+      HoneycombSolr.jetty_home
+    end
+
     def base_solr_path
-      @base_solr_path ||= File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "jetty", "solr"))
+      @base_solr_path ||= File.join(jetty_home, "solr")
     end
 
     def verbose?

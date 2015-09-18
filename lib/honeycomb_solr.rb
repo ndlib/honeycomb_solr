@@ -19,6 +19,7 @@ module HoneycombSolr
       else
         @app_root = "."
       end
+      @app_root = File.expand_path(@app_root)
     end
     @app_root
   end
@@ -32,6 +33,14 @@ module HoneycombSolr
       end
     end
     @logger
+  end
+
+  def self.jetty_home
+    @jetty_home ||= File.join(root, "jetty")
+  end
+
+  def self.solr_home
+    @solr_home ||= File.join(app_root, "solr")
   end
 
   def self.config

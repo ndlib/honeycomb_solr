@@ -5,8 +5,11 @@ namespace :honeycomb_solr do
   task :install do
     source = File.join(HoneycombSolr.root, "config", "solr.yml")
     dest = File.join(HoneycombSolr.app_root, "config", "solr.yml")
-    FileUtils.mkdir_p(File.dirname(dest))
-    FileUtils.cp(source, dest)
+    if source != dest
+      FileUtils.mkdir_p(File.dirname(dest))
+      FileUtils.cp(source, dest)
+    end
+    HoneycombSolr::Installer.execute(verbose: true)
   end
 
   desc "Start the Honeycomb Solr server"

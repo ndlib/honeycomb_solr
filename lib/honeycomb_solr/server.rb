@@ -2,16 +2,13 @@ require "jettywrapper"
 
 module HoneycombSolr
   class Server
-    attr_reader :solr_home, :jetty_home, :java_opts, :logger
+    attr_reader :java_opts
 
     def initialize
-      @jetty_home = File.join(HoneycombSolr.root, "jetty")
-      @solr_home = File.join(HoneycombSolr.app_root, "solr")
       @java_opts = [
         "-Xmx256m",
-        "-DsharedLib=#{File.join(jetty_home, "solr/lib")}",
+        "-DsharedLib=#{File.join(jetty_home, 'solr', 'lib')}",
       ]
-      @logger = HoneycombSolr.logger
     end
 
     def start
@@ -54,6 +51,18 @@ module HoneycombSolr
       HoneycombSolr.config
     end
 
+    def solr_home
+      HoneycombSolr.solr_home
+    end
+
+    def jetty_home
+      HoneycombSolr.jetty_home
+    end
+
+    def logger
+      HoneycombSolr.logger
+    end
+
     def instance
       if @instance.nil?
         install_solr_home
@@ -66,10 +75,7 @@ module HoneycombSolr
 
     def install_solr_home
       unless File.exists?(solr_home)
-        HoneycombSolr::Installer.execute(
-          solr_home,
-          verbose: true
-        )
+        HoneycombSolr::Installer.execute(verbose: true)
       end
     end
 
