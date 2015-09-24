@@ -22,6 +22,8 @@ module HoneycombSolr
 
     def restart
       stop
+      # Give a little time for the service to shut down before starting it again
+      sleep 1
       start
     end
 
